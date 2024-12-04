@@ -2,7 +2,7 @@
 
 ####################################
 
-nom_executable = "a.out"
+nom_executable="a.out"
 
 ####################################
 
@@ -84,7 +84,7 @@ fi
 
 
 if [ -f "$nom_executable" ]; then
-    echo "CA EXIYTE"
+    echo "existe"
 else 
-    echo "CA EXISTE PAS"
+    echo "existe pas"
 fi

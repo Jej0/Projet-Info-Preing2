@@ -1,5 +1,11 @@
 #!/bin/bash
 
+####################################
+
+nom_executable = "a.out"
+
+####################################
+
 
 function afficher_aide {
 
@@ -77,3 +83,8 @@ else
 fi
 
 
+if [ -f "$nom_executable" ]; then
+    echo "CA EXIYTE"
+else 
+    echo "CA EXISTE PAS"
+fi

@@ -6,7 +6,7 @@
 
 typedef struct arbre{
   int identifiant;
-  int capacité;
+  int capacite;
   int consomateur;
   struct arbre *fils_gauche;
   struct arbre *fils_droit;

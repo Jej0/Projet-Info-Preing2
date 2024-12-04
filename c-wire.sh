@@ -23,7 +23,7 @@ if [[ "$3" != "comp" && "$3" != "indiv" && "$3" != "all" ]]; then
     exit 1
 fi
 
-if [[ ("$2" = "hvb" && "$3" = "all") || () ]]; then
-    echo "Le 3eme paramètre doit être différent de 'hvb all', 'hvb indv', 'hva all', 'hva indiv'."
+if [[ ("$2" = "hvb" && "$3" = "all") || ("$2" = "hvb" && "$3" = "indiv") || ("$2" = "hva" && "$3" = "all") || ("$2" = "hva" && "$3" = "indiv") ]]; then
+    echo "Les stations hvb et hva ne sont pas reliées aux particuliers"
     exit 1
 fi

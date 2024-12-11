@@ -3,7 +3,7 @@
 ####################################
 
 nom_executable="a.out"
-
+nom_fichier_lecture="c-wire_v00.dat"
 ####################################
 
 
@@ -88,3 +88,21 @@ if [ -f "$nom_executable" ]; then
 else 
     echo "existe pas"
 fi
+
+if [ -d "tmp" ]; then
+
+    rm -r tmp
+    mkdir tmp
+else
+    mkdir tmp
+fi
+
+if [ ! -d "graphs" ]; then
+    mkdir graphs
+fi
+
+
+while IFS= read -r ligne; do
+    echo "ligne : $ligne"
+done < $nom_fichier_lecture
+

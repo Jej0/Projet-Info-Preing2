@@ -111,8 +111,9 @@ fi
 touch tmp/station.dat
 touch tmp/fils.dat
 
+n="2"
 
+awk -F';' '$2 != "-"' c-wire_v00.dat 
+> tmp/station.dat
 
-awk -F';' '2 != "-"'
-tmp/c-wire_v00.dat > 
-tmp/station.dat 
+echo "fin"

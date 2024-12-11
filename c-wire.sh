@@ -3,13 +3,13 @@
 ####################################
 
 nom_executable="a.out"
-nom_fichier_lecture="c-wire_v00.dat"
+fichier_lecture=""
 fichier_cible_sation="tmp/station.dat"
-fichier_cible_fils="tmp/fils.dat"
+fichier_cible_consomateurs="tmp/consomateurs.dat"
 ####################################
 
 
-arg1=""
+
 arg2=""
 arg3=""
 arg4=""
@@ -48,6 +48,7 @@ fi
 
 if [ -f "$1" ]; then
     echo "Le fichier '$1' existe"
+    nom_fichier_lecture="$1"
 else
     echo "Erreur : Le fichier '$1' n'existe pas"
     echo
@@ -60,11 +61,19 @@ if [[ "$2" != "hvb" && "$2" != "hva" && "$2" != "lv" ]]; then
     echo
     afficher_aide
     exit 1
+else
+    if [[ "$2" = "hvb" ]]; then 
+        arg2="2"
+    elif [[ "$2" = "hva" ]]; then
+        arg2="3"
+    elif [[ "$2" = "lv" ]];then
+        arg2="4"
+    fi
 fi
 
 if [[ "$3" != "comp" && "$3" != "indiv" && "$3" != "all" ]]; then
     echo "Erreur : Le 3eme paramètre doit être 'comp', 'indv', 'all'."
-    echo
+
     afficher_aide
     exit 1
 fi
@@ -97,7 +106,6 @@ else
 fi
 
 if [ -d "tmp" ]; then
-
     rm -r tmp
     mkdir tmp
 else
@@ -109,11 +117,27 @@ if [ ! -d "graphs" ]; then
 fi
 
 touch tmp/station.dat
-touch tmp/fils.dat
+touch tmp/consomateurs.dat
 
-n="2"
 
-awk -F';' '$2 != "-"' c-wire_v00.dat 
-> tmp/station.dat
 
-echo "fin"
+if [ -n "$4" ]; then
+    awk -F';' -v col="$arg2" -v centrale="$4" '$col != "-" && $1 == centrale' "$nom_fichier_lecture" > "$fichier_cible_sation"
+
+    if [[ "$3" = "comp" ]]; then
+        awk -F';' -v col="$arg2" '$5 != "-" && $col != "-"' "$nom_fichier_lecture" > "$fichier_cible_consomateurs"
+    elif [[ "$3" = "indiv" ]]; then
+        awk -F';' -v col="$arg2" '$6 != "-" && $col != "-"' "$nom_fichier_lecture" > "$fichier_cible_consomateurs"
+    elif [[ "$3" = "all" ]]; then
+        awk -F';' -v col="$arg2" '$5 != "-" || $6 != "-" && $col != "-"' "$nom_fichier_lecture" >> "$fichier_cible_consomateurs"
+    fi
+else
+    awk -F';' -v col="$arg2" '$col != "-"' "$nom_fichier_lecture" > "$fichier_cible_sation"
+    if [[ "$3" = "comp" ]]; then
+        awk -F';' -v col="$arg2" '$5 != "-" && $col != "-"' "$nom_fichier_lecture" > "$fichier_cible_consomateurs"
+    elif [[ "$3" = "indiv" ]]; then
+        awk -F';' -v col="$arg2" '$6 != "-" && $col != "-"' "$nom_fichier_lecture" > "$fichier_cible_consomateurs"
+    elif [[ "$3" = "all" ]]; then
+        awk -F';' -v col="$arg2" '$5 != "-" || $6 != "-" && $col != "-"' "$nom_fichier_lecture" >> "$fichier_cible_consomateurs"
+    fi
+fi

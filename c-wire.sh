@@ -4,8 +4,15 @@
 
 nom_executable="a.out"
 nom_fichier_lecture="c-wire_v00.dat"
+fichier_cible_sation="tmp/station.dat"
+fichier_cible_fils="tmp/fils.dat"
 ####################################
 
+
+arg1=""
+arg2=""
+arg3=""
+arg4=""
 
 function afficher_aide {
 
@@ -21,7 +28,7 @@ function afficher_aide {
     echo
     echo "(obligatoire) <comp | indiv | all> : Le type de client séléctionné ('comp' : les entreprises, 'indiv' : les particuliers, 'all' : tout le monde)"
     echo 
-    echo "(optionnel) [<value>] : Valeur positive (>0) pour séléctionner une centrale spécifique"
+    echo "(optionnel) [<value>] : Valeur entre 1 et 5 pour séléctionner une centrale spécifique"
 }
 
 for arg in "$@"; do
@@ -70,10 +77,10 @@ if [[ ("$2" = "hvb" && "$3" = "all") || ("$2" = "hvb" && "$3" = "indiv") || ("$2
 fi
 
 if [ -n "$4" ]; then
-    if [[ "$4" -gt 0 ]]; then
-        echo "arg 4 est positif"
+    if [ "$4" -ge 1 ] && [ "$4" -le 5 ]; then
+        echo "arg 4 est entre 1 et 5"
     else
-        echo "Erreur : Le paramètre 4 doit être une valeur entière positive (>0)"
+        echo "Erreur : Le paramètre 4 doit être entr 1 et 5"
         echo
         afficher_aide
         exit 1
@@ -101,8 +108,11 @@ if [ ! -d "graphs" ]; then
     mkdir graphs
 fi
 
+touch tmp/station.dat
+touch tmp/fils.dat
 
-while IFS= read -r ligne; do
-    echo "ligne : $ligne"
-done < $nom_fichier_lecture
 
+
+awk -F';' '2 != "-"'
+tmp/c-wire_v00.dat > 
+tmp/station.dat 

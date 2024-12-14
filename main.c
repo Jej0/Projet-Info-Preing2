@@ -74,19 +74,19 @@ arbre * rotationDroite(arbre* a){//si le facteur d'équilibre de la racine =-2 =
     return a;
 }
 
-NoeudAVL* doubleRotationGauche(NoeudAVL* a){//si le facteur d'équilibre du fd de la racine >= 0 alors rotation simple SINON rotation double
-    a->droit=rotationDroite(a->droit);
+arbre* doubleRotationGauche(arbre* a){//si le facteur d'équilibre du fd de la racine >= 0 alors rotation simple SINON rotation double
+    a->fils_droit=rotationDroite(a->droit);
     return rotationGauche(a);
 }
-NoeudAVL* doubleRotationDroite(NoeudAVL* a){//si le facteur d'équilibre du fg de la racine <= 0 alors rotation simple SINON rotation double
-    a->gauche=rotationGauche(a->gauche);
+arbre* doubleRotationDroite(arbre* a){//si le facteur d'équilibre du fg de la racine <= 0 alors rotation simple SINON rotation double
+    a->fils_gauche=rotationGauche(a->gauche);
     return rotationDroite(a);
 }
 
 
-NoeudAVL* equilibrerAVL(NoeudAVL* a){
+arbre* equilibrerAVL(NoeudAVL* a){
     if (a->eq>=2){// sous-arbre droit plus profond
-        if(a->droit->eq>=0){
+        if(a->fils_droit->eq>=0){
             return rotationGauche(a);
         }
         else{
@@ -94,7 +94,7 @@ NoeudAVL* equilibrerAVL(NoeudAVL* a){
         }
     }
     else if (a->eq<=-2){// sous-arbre gauche plus profond
-        if(a->gauche->eq<=0){
+        if(a->fils_gauche->eq<=0){
             return rotationDroite(a);
         }
         else{

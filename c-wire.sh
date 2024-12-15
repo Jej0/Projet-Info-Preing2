@@ -9,9 +9,6 @@ fichier_cible_consomateurs="tmp/consomateurs.dat"
 
 
 
-arg2=""
-arg3=""
-arg4=""
 
 function afficher_aide {
 
@@ -60,14 +57,6 @@ if [[ "$2" != "hvb" && "$2" != "hva" && "$2" != "lv" ]]; then
     echo
     afficher_aide
     exit 1
-else
-    if [[ "$2" = "hvb" ]]; then 
-        arg2="2"
-    elif [[ "$2" = "hva" ]]; then
-        arg2="3"
-    elif [[ "$2" = "lv" ]];then
-        arg2="4"
-    fi
 fi
 
 if [[ "$3" != "comp" && "$3" != "indiv" && "$3" != "all" ]]; then
@@ -115,36 +104,49 @@ if [ ! -d "graphs" ]; then
     mkdir graphs
 fi
 
-touch tmp/station.dat
-touch tmp/consomateurs.dat
 
 
+colonne_station=""
 if [ -n "$4" ]; then
-    # Pour les stations : filtrer les lignes et sélectionner uniquement les colonnes `arg2` et 7
-    awk -F';' -v col="$arg2" -v centrale="$4" 'BEGIN {OFS=";"} $col != "-" && $1 == centrale && $7 != "-" {print $col, $7}' "$nom_fichier_lecture" > "$fichier_cible_sation"
+
+    if [[ "$2" = "hvb" ]]; then
+        awk -F';' -v centrale="$4" '$2 != "-" && $3 == "-" && $4 == "-" && $1 == centrale && $7 != "-" {print $2 ";" $7}' "$nom_fichier_lecture" > tmp/hvb
+        colonne_station="2"
+    elif [[ "$2" = "hva" ]]; then
+        awk -F';' -v centrale="$4" '$3 != "-" && $4 == "-" && $1 == centrale && $7 != "-" {print $3 ";" $7}' "$nom_fichier_lecture" > tmp/hva
+        colonne_station="3"
+    elif [[ "$2" = "lv" ]]; then
+        awk -F';' -v centrale="$4" '$4 != "-" && $1 == centrale && $7 != "-" {print $4 ";" $7}' "$nom_fichier_lecture" > tmp/lv
+        colonne_station="4"
+    fi
 
     if [[ "$3" = "comp" ]]; then
-        # Pour les consommateurs : filtrer les lignes et sélectionner uniquement les colonnes `arg2` et 8
-        awk -F';' -v col="$arg2" -v centrale="$4" 'BEGIN {OFS=";"} $5 != "-" && $col != "-" && $1 == centrale {print $col, $8}' "$nom_fichier_lecture" > "$fichier_cible_consomateurs"
+        awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 != "-" && $6 == "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comp
     elif [[ "$3" = "indiv" ]]; then
-        # Pour les consommateurs : filtrer les lignes et sélectionner uniquement les colonnes `arg2` et 8
-        awk -F';' -v col="$arg2" -v centrale="$4" 'BEGIN {OFS=";"} $6 != "-" && $col != "-" && $1 == centrale {print $col, $8}' "$nom_fichier_lecture" > "$fichier_cible_consomateurs"
+        awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 == "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/indiv
     elif [[ "$3" = "all" ]]; then
-        # Pour les consommateurs : filtrer les lignes et sélectionner uniquement les colonnes `arg2` et 8
-        awk -F';' -v col="$arg2" -v centrale="$4" 'BEGIN {OFS=";"} ($5 != "-" || $6 != "-") && $col != "-" && $1 == centrale {print $col, $8}' "$nom_fichier_lecture" >> "$fichier_cible_consomateurs"
+        awk -F';' -v col="$colonne_station" -v centrale="$4" '($5 != "-" || $6 != "-") && $col != "-" && $8 != "-" && $1 == centrale {print $col ";" $8}' "$nom_fichier_lecture" > tmp/all
     fi
+
 else
-    # Pour les stations : filtrer les lignes et sélectionner uniquement les colonnes `arg2` et 7
-    awk -F';' -v col="$arg2" 'BEGIN {OFS=";"} $col != "-" && $7 != "-" {print $col, $7}' "$nom_fichier_lecture" > "$fichier_cible_sation"
+
+    if [[ "$2" == "hvb" ]]; then
+        awk -F';' '$2 != "-" && $3 == "-" && $4 == "-" && $7 != "-" {print $2 ";" $7}' "$nom_fichier_lecture" > tmp/hvb
+        colonne_station="2"
+    elif [[ "$2" == "hva" ]]; then
+        awk -F';' '$3 != "-" && $4 == "-" && $7 != "-" {print $3 ";" $7}' "$nom_fichier_lecture" > tmp/hva
+        colonne_station="3"
+    elif [[ "$2" == "lv" ]]; then
+        awk -F';' '$4 != "-" && $7 != "-" {print $4 ";" $7}' "$nom_fichier_lecture" > tmp/lv
+        colonne_station="4"
+    fi
 
     if [[ "$3" = "comp" ]]; then
-        # Pour les consommateurs : filtrer les lignes et sélectionner uniquement les colonnes `arg2` et 8
-        awk -F';' -v col="$arg2" 'BEGIN {OFS=";"} $5 != "-" && $col != "-" {print $col, $8}' "$nom_fichier_lecture" > "$fichier_cible_consomateurs"
+        awk -F';' -v col="$colonne_station" '$col != "-" && $5 != "-" && $6 == "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comp
     elif [[ "$3" = "indiv" ]]; then
-        # Pour les consommateurs : filtrer les lignes et sélectionner uniquement les colonnes `arg2` et 8
-        awk -F';' -v col="$arg2" 'BEGIN {OFS=";"} $6 != "-" && $col != "-" {print $col, $8}' "$nom_fichier_lecture" > "$fichier_cible_consomateurs"
+        awk -F';' -v col="$colonne_station" '$col != "-" && $6 != "-" && $5 == "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/indiv
     elif [[ "$3" = "all" ]]; then
-        # Pour les consommateurs : filtrer les lignes et sélectionner uniquement les colonnes `arg2` et 8
-        awk -F';' -v col="$arg2" 'BEGIN {OFS=";"} ($5 != "-" || $6 != "-") && $col != "-" {print $col, $8}' "$nom_fichier_lecture" >> "$fichier_cible_consomateurs"
+        awk -F';' -v col="$colonne_station" '($5 != "-" || $6 != "-") && $col != "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/all
     fi
+
 fi

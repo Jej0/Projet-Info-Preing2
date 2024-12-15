@@ -3,8 +3,6 @@
 ####################################
 nom_executable="a.out"
 fichier_lecture=""
-fichier_cible_sation="tmp/station.dat"
-fichier_cible_consomateurs="tmp/consomateurs.dat"
 ####################################
 
 
@@ -121,11 +119,11 @@ if [ -n "$4" ]; then
     fi
 
     if [[ "$3" = "comp" ]]; then
-        awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 != "-" && $6 == "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comp
+        awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 != "-" && $6 == "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comp_"$4"
     elif [[ "$3" = "indiv" ]]; then
-        awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 == "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/indiv
+        awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 == "-" && $6 != "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/indiv_"$4"
     elif [[ "$3" = "all" ]]; then
-        awk -F';' -v col="$colonne_station" -v centrale="$4" '($5 != "-" || $6 != "-") && $col != "-" && $8 != "-" && $1 == centrale {print $col ";" $8}' "$nom_fichier_lecture" > tmp/all
+        awk -F';' -v col="$colonne_station" -v centrale="$4" '($5 != "-" || $6 != "-") && $col != "-" && $8 != "-" && $1 == centrale {print $col ";" $8}' "$nom_fichier_lecture" > tmp/all_"$4"
     fi
 
 else

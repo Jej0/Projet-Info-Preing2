@@ -104,47 +104,50 @@ fi
 
 
 
+
+
 colonne_station=""
 if [ -n "$4" ]; then
-
+    echo "$2_$3_$4" > tmp/nom
     if [[ "$2" = "hvb" ]]; then
-        awk -F';' -v centrale="$4" '$2 != "-" && $3 == "-" && $4 == "-" && $1 == centrale && $7 != "-" {print $2 ";" $7}' "$nom_fichier_lecture" > tmp/hvb
+        awk -F';' -v centrale="$4" '$2 != "-" && $3 == "-" && $4 == "-" && $1 == centrale && $7 != "-" {print $2 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="2"
     elif [[ "$2" = "hva" ]]; then
-        awk -F';' -v centrale="$4" '$3 != "-" && $4 == "-" && $1 == centrale && $7 != "-" {print $3 ";" $7}' "$nom_fichier_lecture" > tmp/hva
+        awk -F';' -v centrale="$4" '$3 != "-" && $4 == "-" && $1 == centrale && $7 != "-" {print $3 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="3"
     elif [[ "$2" = "lv" ]]; then
-        awk -F';' -v centrale="$4" '$4 != "-" && $1 == centrale && $7 != "-" {print $4 ";" $7}' "$nom_fichier_lecture" > tmp/lv
+        awk -F';' -v centrale="$4" '$4 != "-" && $1 == centrale && $7 != "-" {print $4 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="4"
     fi
 
     if [[ "$3" = "comp" ]]; then
-        awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 != "-" && $6 == "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comp_"$4"
+        awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 != "-" && $6 == "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comsomateurs
     elif [[ "$3" = "indiv" ]]; then
-        awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 == "-" && $6 != "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/indiv_"$4"
+        awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 == "-" && $6 != "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comsomateurs
     elif [[ "$3" = "all" ]]; then
-        awk -F';' -v col="$colonne_station" -v centrale="$4" '($5 != "-" || $6 != "-") && $col != "-" && $8 != "-" && $1 == centrale {print $col ";" $8}' "$nom_fichier_lecture" > tmp/all_"$4"
+        awk -F';' -v col="$colonne_station" -v centrale="$4" '($5 != "-" || $6 != "-") && $col != "-" && $8 != "-" && $1 == centrale {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comsomateurs
     fi
 
 else
-
+    echo "$2_$3" > tmp/nom
     if [[ "$2" == "hvb" ]]; then
-        awk -F';' '$2 != "-" && $3 == "-" && $4 == "-" && $7 != "-" {print $2 ";" $7}' "$nom_fichier_lecture" > tmp/hvb
+        awk -F';' '$2 != "-" && $3 == "-" && $4 == "-" && $7 != "-" {print $2 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="2"
     elif [[ "$2" == "hva" ]]; then
-        awk -F';' '$3 != "-" && $4 == "-" && $7 != "-" {print $3 ";" $7}' "$nom_fichier_lecture" > tmp/hva
+        awk -F';' '$3 != "-" && $4 == "-" && $7 != "-" {print $3 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="3"
     elif [[ "$2" == "lv" ]]; then
-        awk -F';' '$4 != "-" && $7 != "-" {print $4 ";" $7}' "$nom_fichier_lecture" > tmp/lv
+        awk -F';' '$4 != "-" && $7 != "-" {print $4 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="4"
     fi
 
     if [[ "$3" = "comp" ]]; then
-        awk -F';' -v col="$colonne_station" '$col != "-" && $5 != "-" && $6 == "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comp
+        awk -F';' -v col="$colonne_station" '$col != "-" && $5 != "-" && $6 == "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comsomateurs
     elif [[ "$3" = "indiv" ]]; then
-        awk -F';' -v col="$colonne_station" '$col != "-" && $6 != "-" && $5 == "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/indiv
+        awk -F';' -v col="$colonne_station" '$col != "-" && $6 != "-" && $5 == "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comsomateurs
     elif [[ "$3" = "all" ]]; then
-        awk -F';' -v col="$colonne_station" '($5 != "-" || $6 != "-") && $col != "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/all
+        awk -F';' -v col="$colonne_station" '($5 != "-" || $6 != "-") && $col != "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/comsomateurs
     fi
 
 fi
+

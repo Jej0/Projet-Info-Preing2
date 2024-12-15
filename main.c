@@ -31,7 +31,7 @@ int min(int a, int b){
     }
 }
 
-arbre* creerAVL(int e)
+arbre* creerAVL(int id, int cap)
 {
     // Alloue de la mémoire pour un nouveau nœud
     arbre* new = (AVL* )malloc(sizeof(AVL));
@@ -39,9 +39,10 @@ arbre* creerAVL(int e)
     {
         exit(EXIT_FAILURE); // Arrêt immédiat en cas d'erreur d'allocation
     }
-    new->identifiant = e; // Initialisation de la valeur
+    new->identifiant = id; // Initialisation de la valeur
     new->fils_gauche = NULL; // Pas de fils gauche
     new->fils_droit = NULL; // Pas de fils droit
+    new->capacité = cap;
     new->equilibre = 0;    // Facteur d'équilibre initialisé à 0
     return new;
 }
@@ -115,22 +116,25 @@ long taille_fichier(FILE *fichier) {
 
 
 
-void lire_premiere_ligne(const char *fichier, arbre *abr) {
+arbre * onlitpuisonconstruit(const char *fichier, arbre *abr) {
     FILE *fichier = fopen(fichier, "r");
     if (!fichier) {
         printf("Erreur lors de l'ouverture du fichier");
         exit(EXIT_FAILURE);
     }
-char * buffer = malloc((char)*(sizeof(taille_fichier(fichier)))+1);
-if(buffer == NULL){
-    printf("erreur d'allocation de la mémoire")
-    exit(EXIT_FAILURE);
-}
-int n_ligne = 0;
-arbre *racine = NULL;
+char buffer[256];
 while(fgets(buffer , sizeof(buffer), file)){
-    buffer[strcspn(buffer, "\n")] = '\0';
-    n_ligne++;
+   fichier[strcspn(line, "\n")] = '\0';
+
+        // Extraire les valeurs id et cap
+        int id;
+        long cap;
+        if (sscanf(line, "%d;%ld", &id, &cap) == 2) {
+            if(abr == NULL){
+                abr = creerAVL(id,cap);
+            }else{
+                abr = insererAVL
+            }
 }
 
 

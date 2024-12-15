@@ -1,21 +1,4 @@
-#include <stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<stdbool.h>
-
-
-
-typedef struct Arbre{
-  int identifiant;
-  long capacite;
-  long consomateur;
-  int equilibre;
-  int hauteur;
-  struct Arbre *fils_gauche;
-  struct Arbre *fils_droit;
-
-}Arbre;
-
+#include "header.h"
 
 
 int max(int a, int b){

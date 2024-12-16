@@ -110,33 +110,34 @@ Arbre* equilibrerAVL(Arbre* a){
 }
 
 
-Arbre* insertionAVL(Arbre* racine, int id, long cap) {
-    // Si l'arbre est vide, créer un nouveau nœud
-    if (racine == NULL) {
-        return creerNoeud(id, cap);
+Arbre * insertionAVL(Arbre* a,int id,long cap , int* h){
+    if(a==NULL){//l'arbre est vide
+        *h=1;//la hauteur vaut 1
+        return creerNoeud(id,cap);//on crée un noeud
     }
-
-    // Insertion dans le sous-arbre gauche
-    if (id < racine->identifiant) {
-        racine->fils_gauche = insertionAVL(racine->fils_gauche, id, cap);
+    else if(id<a->identifiant){
+        a->fils_gauche=insertionAVL(a->fils_gauche,id,cap,h);//parcours récursif sous-arbre gauche
+        *h=-*h;//on est à gauche donc si déséquilibre, nécessairement négatif {-2}
     }
-    // Insertion dans le sous-arbre droit
-    else if (id > racine->identifiant) {
-        racine->fils_droit = insertionAVL(racine->fils_droit, id, cap);
-    } else {
-        // Si l'identifiant existe déjà, ne pas insérer (pas de doublons dans l'arbre AVL)
-        return racine;
+    else if(id>a->identifiant){
+         a->fils_droit=insertionAVL(a->fils_droit,id,cap,h);//parcours récursif sous-arbre droit, on est à droite donc si déséquilibre, nécessairement positif {2}
     }
-
-    // Mise à jour du facteur d'équilibre
-    int hauteur_gauche = racine->fils_gauche ? racine->fils_gauche->equilibre : -1;
-    int hauteur_droite = racine->fils_droit ? racine->fils_droit->equilibre : -1;
-    racine->equilibre = hauteur_droite - hauteur_gauche;
-    afficherAVL(racine);
-    printf("\n");
-    // Équilibrer l'arbre si nécessaire
-    return equilibrerAVL(racine);
+    else{
+        *h=0;//on a pas touché à l'arbre, du moins à sa hauteur
+        return a;
+    }
+    if(*h!=0){//h différent de 0 = on a modifié l'arbre donc déséquilibré (gauche ou droite)
+       a->equilibre += *h;
+       a= equilibrerAVL(a);
+       if(a->equilibre== 0){
+        *h = 0;
+       }else{
+        *h = 1;
+       }
+    }
+    return a;
 }
+
 
 
 

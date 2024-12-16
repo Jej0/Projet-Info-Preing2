@@ -9,6 +9,8 @@ int main() {
     }
 
     Arbre* racine = NULL;
+    int h;
+
     char line[256];
     while (fgets(line, sizeof(line), file)) {
         // Supprimer le saut de ligne (si présent)
@@ -18,8 +20,7 @@ int main() {
         long cap;
         if (sscanf(line, "%d;%ld", &id, &cap) == 2) {
             // printf("%d, %ld\n", id, cap);
-
-            racine = insertionAVL(racine, id, cap);
+            racine = insertionAVL(racine, id, cap, &h);
 
         } else {
             printf("erreur");

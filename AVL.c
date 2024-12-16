@@ -149,18 +149,18 @@ arbre * lire_construire(FILE * fichier, arbre *abr) {
         printf("Erreur lors de l'ouverture du fichier");
         exit(EXIT_FAILURE);
     }
-char buffer[256];
-while(fgets(buffer , sizeof(buffer), fichier)){
-   fichier[strcspn(buffer, "\n")] = '\0';
+    char buffer[256];
+    while(fgets(buffer , sizeof(buffer), fichier)){
+    fichier[strcspn(buffer, "\n")] = '\0';
 
-        // Extraire les valeurs id et cap
-        int id;
-        long cap;
-        if (sscanf(buffer, "%d;%ld", &id, &cap) == 2) {
-           abr = insertionAVL(abr,id,cap,*h);
+            // Extraire les valeurs id et cap
+            int id;
+            long cap;
+            if (sscanf(buffer, "%d;%ld", &id, &cap) == 2) {
+            abr = insertionAVL(abr,id,cap,*h);
+        }
     }
-}
-return abr;
+    return abr;
 }
 
 void affiche_prefixe(arbre *abr){

@@ -19,4 +19,5 @@ typedef struct Arbre{
 void afficherAVL(Arbre* a);
 Arbre* creerNoeud(int id, long cap);
 Arbre* equilibrerAVL(Arbre* a);
-Arbre* insertionAVL(Arbre* racine, int id, long cap);
+
+Arbre * insertionAVL(Arbre* a,int id,long cap , int* h);

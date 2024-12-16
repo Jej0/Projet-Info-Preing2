@@ -7,7 +7,8 @@
 typedef struct Arbre{
   int identifiant;
   long capacite;
-  long consomateur;
+  long consommation;
+  int consommations;
   int equilibre;
   int hauteur;
   struct Arbre *fils_gauche;

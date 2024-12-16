@@ -168,6 +168,33 @@ void ajouterConsommateursDepuisFichier(Arbre *root, const char *filename) {
 
     fclose(file);
 }
+void exporterAVLDansCSV(Arbre *root, const char *nomFichier) {
+    if (!root) return; // Si l'arbre est vide, rien à écrire
+
+    FILE *file = fopen(nomFichier, "w");
+    if (!file) {
+        perror("Erreur lors de l'ouverture du fichier de sortie");
+        return;
+    }
+
+    // Écrire les en-têtes des colonnes
+    fprintf(file, "Identifiant:Capacite:Consommation\n");
+
+    // Fonction récursive pour parcourir l'arbre en parcours infixe
+    void parcoursInfixe(Arbre *node) {
+        if (node) {
+            parcoursInfixe(node->fils_gauche);
+            fprintf(file, "%d:%ld:%ld\n", node->identifiant, node->capacite, node->consommation);
+            parcoursInfixe(node->fils_droit);
+        }
+    }
+
+    // Lancer le parcours à partir de la racine
+    parcoursInfixe(root);
+
+    fclose(file); // Fermer le fichier après écriture
+}
+
 
 }
 

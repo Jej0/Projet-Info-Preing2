@@ -1,4 +1,6 @@
 #include "AVL.h"
+#include "conso.h"
+#include "header.h"
 
 int main() {
 
@@ -29,4 +31,7 @@ int main() {
     
     fclose(file);
     affichePrefixe(racine);
+
+
+    ajouterConsommateursDepuisFichier(racine, consomateurs);
 }

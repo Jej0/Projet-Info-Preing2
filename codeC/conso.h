@@ -1,5 +1,5 @@
 #include "header.h"
-#include "AVL.h"
+//#include "AVL.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

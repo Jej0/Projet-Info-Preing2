@@ -19,7 +19,7 @@ int min(int a, int b){
 
 void affichePrefixe(Arbre *abr){
     if (abr != NULL) {
-        printf("Identifiant: %d, Capacité: %ld, Consommation: %ld\n", abr->identifiant, abr->capacite, abr->consomateur);
+        printf("Identifiant: %d, Capacité: %ld, Consommation: %ld\n", abr->identifiant, abr->capacite, abr->consommateurs);
         affichePrefixe(abr->fils_gauche);
         affichePrefixe(abr->fils_droit);
     }

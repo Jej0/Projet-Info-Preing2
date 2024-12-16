@@ -17,23 +17,14 @@ int min(int a, int b){
     }
 }
 
-void afficherAVL(Arbre* a) {
-
-    if (a == NULL)
-        return;
-
-
-    printf("%d ", a->identifiant);
-    // Affiche les éléments à gauche
-    afficherAVL(a->fils_gauche);
-
-    // Affiche la racine
-
-
-    // Affiche les éléments à droite
-    afficherAVL(a->fils_droit);
-
+void affichePrefixe(Arbre *abr){
+    if (abr != NULL) {
+        printf("Identifiant: %d, Capacité: %ld, Consommation: %ld\n", abr->identifiant, abr->capacite, abr->consomateur);
+        affichePrefixe(abr->fils_gauche);
+        affichePrefixe(abr->fils_droit);
+    }
 }
+
 
 Arbre* creerNoeud(int id, long cap)
 {
@@ -90,7 +81,7 @@ Arbre* doubleRotationDroite(Arbre* a){//si le facteur d'équilibre du fg de la r
 
 
 Arbre* equilibrerAVL(Arbre* a){
-    if (a->equilibre>=2){// sous-arbre droit plus profond
+    if (a->equilibre>=2){// sous-Arbre droit plus profond
         if(a->fils_droit->equilibre>=0){
             return rotationGauche(a);
         }
@@ -98,7 +89,7 @@ Arbre* equilibrerAVL(Arbre* a){
             return doubleRotationGauche(a);
         }
     }
-    else if (a->equilibre<=-2){// sous-arbre gauche plus profond
+    else if (a->equilibre<=-2){// sous-Arbre gauche plus profond
         if(a->fils_gauche->equilibre<=0){
             return rotationDroite(a);
         }
@@ -111,22 +102,22 @@ Arbre* equilibrerAVL(Arbre* a){
 
 
 Arbre * insertionAVL(Arbre* a,int id,long cap , int* h){
-    if(a==NULL){//l'arbre est vide
+    if(a==NULL){//l'Arbre est vide
         *h=1;//la hauteur vaut 1
         return creerNoeud(id,cap);//on crée un noeud
     }
     else if(id<a->identifiant){
-        a->fils_gauche=insertionAVL(a->fils_gauche,id,cap,h);//parcours récursif sous-arbre gauche
+        a->fils_gauche=insertionAVL(a->fils_gauche,id,cap,h);//parcours récursif sous-Arbre gauche
         *h=-*h;//on est à gauche donc si déséquilibre, nécessairement négatif {-2}
     }
     else if(id>a->identifiant){
-         a->fils_droit=insertionAVL(a->fils_droit,id,cap,h);//parcours récursif sous-arbre droit, on est à droite donc si déséquilibre, nécessairement positif {2}
+         a->fils_droit=insertionAVL(a->fils_droit,id,cap,h);//parcours récursif sous-Arbre droit, on est à droite donc si déséquilibre, nécessairement positif {2}
     }
     else{
-        *h=0;//on a pas touché à l'arbre, du moins à sa hauteur
+        *h=0;//on a pas touché à l'Arbre, du moins à sa hauteur
         return a;
     }
-    if(*h!=0){//h différent de 0 = on a modifié l'arbre donc déséquilibré (gauche ou droite)
+    if(*h!=0){//h différent de 0 = on a modifié l'Arbre donc déséquilibré (gauche ou droite)
        a->equilibre += *h;
        a= equilibrerAVL(a);
        if(a->equilibre== 0){

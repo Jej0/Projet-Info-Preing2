@@ -28,5 +28,5 @@ int main() {
     }
     
     fclose(file);
-    afficherAVL(racine);
+    affichePrefixe(racine);
 }

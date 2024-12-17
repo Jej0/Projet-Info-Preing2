@@ -1,8 +1,14 @@
 #include "header.h"
 //#include "AVL.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
+void affichePrefixe(Arbre *abr){
+    if (abr != NULL) {
+        printf("Identifiant: %d, Capacité: %ld, Consommateurs: %d, Consommation: %ld\n", abr->identifiant, abr->capacite, abr->consommateurs, abr->consommation);
+        affichePrefixe(abr->fils_gauche);
+        affichePrefixe(abr->fils_droit);
+    }
+}
+
 
 Arbre *creerNoeud(int id, long capacite) {
     Arbre *noeud = malloc(sizeof(Arbre));
@@ -168,6 +174,7 @@ void ajouterConsommateursDepuisFichier(Arbre *root, const char *filename) {
 
     fclose(file);
 }
+
 void exporterAVLDansCSV(Arbre *root, const char *nomFichier) {
     if (!root) return; // Si l'arbre est vide, rien à écrire
 
@@ -196,6 +203,6 @@ void exporterAVLDansCSV(Arbre *root, const char *nomFichier) {
 }
 
 
-}
+
 
 

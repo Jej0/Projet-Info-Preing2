@@ -4,7 +4,7 @@
 #include<stdbool.h>
 
 
-typedef struct Arbre{
+typedef struct Arbre {
   int identifiant;
   long capacite;
   long consommation;
@@ -14,11 +14,11 @@ typedef struct Arbre{
   struct Arbre *fils_gauche;
   struct Arbre *fils_droit;
 
-}Arbre;
+} Arbre;
 
 
-void afficherAVL(Arbre* a);
-Arbre* creerNoeud(int id, long cap);
-Arbre* equilibrerAVL(Arbre* a);
+// void afficherAVL(Arbre* a);
+// Arbre* creerNoeud(int id, long cap);
+// Arbre* equilibrerAVL(Arbre* a);
 
-Arbre * insertionAVL(Arbre* a,int id,long cap , int* h);
+// Arbre * insertionAVL(Arbre* a,int id,long cap , int* h);

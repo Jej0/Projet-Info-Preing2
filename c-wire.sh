@@ -183,5 +183,5 @@ fi
 
 
 cd codeC
-./prog
 
+(time ./prog) 2>&1

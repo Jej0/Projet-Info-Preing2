@@ -4,8 +4,8 @@
 int main() {
 
     Arbre * racine = construireAVLDepuisFichier("../tmp/stations");
-    affichePrefixe(racine);
-    printf("\n");
+    //affichePrefixe(racine);
+    //printf("\n");
     ajouterConsommateursDepuisFichier(racine, "../tmp/consommateurs");
 
     // affichePrefixe(racine);

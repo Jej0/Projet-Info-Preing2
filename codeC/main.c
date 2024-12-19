@@ -22,7 +22,13 @@ int main() {
 
     fclose(nom_fichier);
 
-    exporterAVLDansCSV(racine, ligne);
+
+    char chemin[300] = "../tests/";
+    
+
+
+
+    exporterAVLDansCSV(racine, strcat(chemin, ligne));
 
 
 }

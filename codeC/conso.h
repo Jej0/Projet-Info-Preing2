@@ -175,7 +175,98 @@ void ajouterConsommateursDepuisFichier(Arbre *root, const char *filename) {
     fclose(file);
 }
 
-void exporterAVLDansCSV(Arbre *racine, const char *nomFichier) {
+void ajouterDansListeMin(Arbre *liste_min[], Arbre *station) {
+    for (int i = 0; i < 10; i++) {
+        if (liste_min[i] == NULL || (station->capacite - station->consommation) < (liste_min[i]->capacite - liste_min[i]->consommation)) {
+            // Décaler les éléments pour insérer la station
+            for (int j = 9; j > i; j--) {
+                liste_min[j] = liste_min[j - 1];
+            }
+            liste_min[i] = station;
+            return;
+        }
+    }
+}
+
+void ajouterDansListeMax(Arbre *liste_max[], Arbre *station) {
+    for (int i = 0; i < 10; i++) {
+        if (liste_max[i] == NULL || (station->capacite - station->consommation) > (liste_max[i]->capacite - liste_max[i]->consommation)) {
+            // Décaler les éléments pour insérer la station
+            for (int j = 9; j > i; j--) {
+                liste_max[j] = liste_max[j - 1];
+            }
+            liste_max[i] = station;
+            return;
+        }
+    }
+}
+
+void parcoursInfixePourMinMax(Arbre *racine, Arbre *liste_min[], Arbre *liste_max[]) {
+    if (!racine) return;
+
+    // Parcours du sous-arbre gauche
+    parcoursInfixePourMinMax(racine->fils_gauche, liste_min, liste_max);
+
+    // Ajout dans les listes min et max
+    ajouterDansListeMin(liste_min, racine);
+    ajouterDansListeMax(liste_max, racine);
+
+    // Parcours du sous-arbre droit
+    parcoursInfixePourMinMax(racine->fils_droit, liste_min, liste_max);
+}
+
+
+void exporterExtremeStations(Arbre **liste_min, Arbre **liste_max, const char *nomFichier) {
+    FILE *fichier = fopen(nomFichier, "w");
+    if (!fichier) {
+        perror("Erreur lors de l'ouverture du fichier pour l'exportation");
+        return;
+    }
+
+    // En-têtes
+    fprintf(fichier, "Min and Max 'capacity-load' extreme nodes\n");
+    fprintf(fichier, "Station LV:Capacité:Consommation (tous)\n");
+
+
+    // Écrire les nœuds de la liste_max
+    for (int i = 0; i < 10; i++) {
+        if (liste_max[i]) {
+            fprintf(fichier, "%d:%ld:%ld\n", liste_max[i]->identifiant, liste_max[i]->capacite, liste_max[i]->consommation);
+        }
+    }
+
+    // Écrire les nœuds de la liste_min
+    for (int i = 0; i < 10; i++) {
+        if (liste_min[i]) {
+            fprintf(fichier, "%d:%ld:%ld\n", liste_min[i]->identifiant, liste_min[i]->capacite, liste_min[i]->consommation);
+        }
+    }
+
+
+
+    fclose(fichier);
+    printf("Exportation réussie dans le fichier %s\n", nomFichier);
+}
+
+void minMaxStationLV(Arbre *racine, char * nomFichier) {
+    Arbre *liste_min[10] = {NULL}; // Initialiser la liste des 10 plus petites consommations
+    Arbre *liste_max[10] = {NULL}; // Initialiser la liste des 10 plus grandes consommations
+
+    // Parcours de l'arbre pour remplir les listes
+    parcoursInfixePourMinMax(racine, liste_min, liste_max);
+
+    char chemin[300] = "../tests/";
+    strcat(chemin, nomFichier);
+    strcat(chemin, "_minmax.csv");
+
+    printf("%s", chemin);
+    exporterExtremeStations(liste_min, liste_max, chemin);
+}
+
+
+
+
+void exporterAVLDansCSV(Arbre *racine, char *nomFichier) {
     if (!racine) return; // Si l'arbre est vide, rien à écrire
 
     FILE *fichier_CSV = fopen(nomFichier, "w");
@@ -199,6 +290,7 @@ void exporterAVLDansCSV(Arbre *racine, const char *nomFichier) {
     nom_station[strcspn(nom_station, "\n")] = '\0';
 
     fgets(info_conso, sizeof(info_conso), fichier_info);
+    info_conso[strcspn(info_conso, "\n")] = '\0';
 
     fclose(fichier_info);
 
@@ -218,6 +310,13 @@ void exporterAVLDansCSV(Arbre *racine, const char *nomFichier) {
     parcoursInfixe(racine);
 
     fclose(fichier_CSV); // Fermer le fichier après écriture
+
+    if (strcmp(nom_station, "Station LV") == 0 && strcmp(info_conso, "(tous)") == 0) {
+        printf("test");
+        nomFichier[strlen(nomFichier) - 4] = '\0';
+        minMaxStationLV(racine, nomFichier);
+    }
+
 }
 
 

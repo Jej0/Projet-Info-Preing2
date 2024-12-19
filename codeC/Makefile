@@ -1,31 +1,22 @@
-# Nom de l'exécutable
-TARGET = prog
 
-# Compilateur
-CC = gcc
+CC = gcc        # Compiler C
+CFLAGS = -Wall 
 
-# Options de compilation
-CFLAGS = -Wall -Wextra -std=c99
+# Fichiers sources
+SRC_FILES = main.c
 
-# Fichiers sources et objets
-SRCS = main.c
-OBJS = main.o
+# Fichiers d'en-tête
+HEADER_FILES = header.h conso.h
 
-# Règle principale
-all: $(TARGET)
+# Sortie
+EXECUTABLE = prog
 
-# Création de l'exécutable
-$(TARGET): $(OBJS)
-	$(CC) $(OBJS) -o $(TARGET)
+all: $(EXECUTABLE)
 
-# Compilation des fichiers sources
-main.o: main.c header.h conso.h
-	$(CC) $(CFLAGS) -c main.c -o main.o
+$(EXECUTABLE): $(SRC_FILES) $(HEADER_FILES)
+	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(SRC_FILES)
 
-# Nettoyage des fichiers générés
+.PHONY: clean
+
 clean:
-	rm -f $(OBJS) $(TARGET)
-
-# Nettoyage complet
-distclean: clean
-	rm -f *~
+	rm -f $(EXECUTABLE)

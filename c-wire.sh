@@ -1,7 +1,8 @@
 #!/bin/bash
 
 ####################################
-nom_executable="a.out"
+nom_executable="codeC/prog"
+chemin_makefile="codeC"
 fichier_lecture=""
 ####################################
 
@@ -88,7 +89,23 @@ fi
 if [ -f "$nom_executable" ]; then
     echo "existe"
 else 
-    echo "existe pas"
+    echo "existe pas, création prog"
+
+    if [ ! -f "$chemin_makefile/Makefile" ]; then
+        echo "Erreur : Aucun fichier Makefile trouvé dans '$chemin_makefile'."
+        exit 1
+    fi
+
+    make -f "Makefile" -C "$chemin_makefile"
+
+    if [ $? -eq 0 ]; then
+        echo "Makefile exécuté avec succès depuis '$chemin_makefile'."
+        chmod 777 codeC/prog
+    else
+        echo "Erreur lors de l'exécution du Makefile."
+        exit 1
+    fi
+
 fi
 
 if [ -d "tmp" ]; then
@@ -110,44 +127,61 @@ colonne_station=""
 if [ -n "$4" ]; then
     echo "$2_$3_$4.csv" > tmp/nom
     if [[ "$2" = "hvb" ]]; then
+        echo "Station HV-B" >> tmp/nom
         awk -F';' -v centrale="$4" '$2 != "-" && $3 == "-" && $4 == "-" && $1 == centrale && $7 != "-" {print $2 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="2"
     elif [[ "$2" = "hva" ]]; then
+    echo "Station HV-A" >> tmp/nom
         awk -F';' -v centrale="$4" '$3 != "-" && $4 == "-" && $1 == centrale && $7 != "-" {print $3 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="3"
     elif [[ "$2" = "lv" ]]; then
+        echo "Station LV" >> tmp/nom
         awk -F';' -v centrale="$4" '$4 != "-" && $1 == centrale && $7 != "-" {print $4 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="4"
     fi
 
     if [[ "$3" = "comp" ]]; then
+        echo "(entreprises)" >> tmp/nom
         awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 != "-" && $6 == "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/consommateurs
     elif [[ "$3" = "indiv" ]]; then
+        echo "(particuliers)" >> tmp/nom
         awk -F';' -v col="$colonne_station" -v centrale="$4" '$col != "-" && $5 == "-" && $6 != "-" && $1 == centrale && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/consommateurs
     elif [[ "$3" = "all" ]]; then
+        echo "(tous)" >> tmp/nom
         awk -F';' -v col="$colonne_station" -v centrale="$4" '($5 != "-" || $6 != "-") && $col != "-" && $8 != "-" && $1 == centrale {print $col ";" $8}' "$nom_fichier_lecture" > tmp/consommateurs
     fi
 
 else
-    echo "$2_$3.csv" > tmp/nom
+    echo "$2_$3.csv" >> tmp/nom
     if [[ "$2" == "hvb" ]]; then
+        echo "Station HV-B" >> tmp/nom
         awk -F';' '$2 != "-" && $3 == "-" && $4 == "-" && $7 != "-" {print $2 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="2"
     elif [[ "$2" == "hva" ]]; then
+        echo "Station HV-A" >> tmp/nom
         awk -F';' '$3 != "-" && $4 == "-" && $7 != "-" {print $3 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="3"
     elif [[ "$2" == "lv" ]]; then
+        echo "Station LV" >> tmp/nom
         awk -F';' '$4 != "-" && $7 != "-" {print $4 ";" $7}' "$nom_fichier_lecture" > tmp/stations
         colonne_station="4"
     fi
 
     if [[ "$3" = "comp" ]]; then
+        echo "(entreprises)" >> tmp/nom
         awk -F';' -v col="$colonne_station" '$col != "-" && $5 != "-" && $6 == "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/consommateurs
     elif [[ "$3" = "indiv" ]]; then
+        echo "(particuliers)" >> tmp/nom
         awk -F';' -v col="$colonne_station" '$col != "-" && $6 != "-" && $5 == "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/consommateurs
     elif [[ "$3" = "all" ]]; then
+        echo "(tous)" >> tmp/nom
         awk -F';' -v col="$colonne_station" '($5 != "-" || $6 != "-") && $col != "-" && $8 != "-" {print $col ";" $8}' "$nom_fichier_lecture" > tmp/consommateurs
     fi
 
 fi
+
+
+
+cd codeC
+./prog
 

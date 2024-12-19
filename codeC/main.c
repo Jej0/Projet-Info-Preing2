@@ -8,7 +8,7 @@ int main() {
     printf("\n");
     ajouterConsommateursDepuisFichier(racine, "../tmp/consommateurs");
 
-    affichePrefixe(racine);
+    // affichePrefixe(racine);
 
 
     FILE* nom_fichier = fopen("../tmp/nom", "r"); // Ouvre le fichier en mode lecture
@@ -18,7 +18,8 @@ int main() {
     }
 
     char ligne[256]; // Buffer pour stocker la ligne
-    fgets(ligne, sizeof(ligne), nom_fichier); //lit la premiere ligne
+    fgets(ligne, sizeof(ligne), nom_fichier);
+
     fclose(nom_fichier);
 
     exporterAVLDansCSV(racine, ligne);

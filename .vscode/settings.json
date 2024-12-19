@@ -1,6 +1,15 @@
 {
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
-        "conso.h": "c"
-    }
+        "conso.h": "c",
+        "sstream": "c"
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/workspaces/Projet-Info-Preing2",
+            "binaryPath": "/workspaces/Projet-Info-Preing2/main",
+            "binaryArgs": []
+        }
+    ],
+    "makefile.makefilePath": "/workspaces/Projet-Info-Preing2/Makefile"
 }

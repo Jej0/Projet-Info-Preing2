@@ -105,7 +105,7 @@ Arbre *insererStation(Arbre *noeud, int id, long capacite) {
 Arbre *construireAVLDepuisFichier(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (!file) {
-        perror("Erreur lors de l'ouverture du fichier stations.txt");
+        perror("Erreur lors de l'ouverture du fichier stations");
         return NULL;
     }
 
@@ -175,31 +175,49 @@ void ajouterConsommateursDepuisFichier(Arbre *root, const char *filename) {
     fclose(file);
 }
 
-void exporterAVLDansCSV(Arbre *root, const char *nomFichier) {
-    if (!root) return; // Si l'arbre est vide, rien à écrire
+void exporterAVLDansCSV(Arbre *racine, const char *nomFichier) {
+    if (!racine) return; // Si l'arbre est vide, rien à écrire
 
-    FILE *file = fopen(nomFichier, "w");
-    if (!file) {
-        perror("Erreur lors de l'ouverture du fichier de sortie");
+    FILE *fichier_CSV = fopen(nomFichier, "w");
+    if (!fichier_CSV) {
+        perror("Erreur lors de l'ouverture du fichier CSV");
         return;
     }
 
+    FILE *fichier_info = fopen("../tmp/nom", "r");
+    if (!fichier_info) {
+        perror("Erreur lors de l'ouverture du fichier nom");
+        return;
+    }
+
+    char nom_station[300];
+    char info_conso[300];
+
+
+    fgets(nom_station, sizeof(nom_station), fichier_info);
+    fgets(nom_station, sizeof(nom_station), fichier_info);
+    nom_station[strcspn(nom_station, "\n")] = '\0';
+
+    fgets(info_conso, sizeof(info_conso), fichier_info);
+
+    fclose(fichier_info);
+
     // Écrire les en-têtes des colonnes
-    fprintf(file, "Identifiant:Capacite:Consommation\n");
+    fprintf(fichier_CSV, "%s:Capacité:Consommation %s\n", nom_station, info_conso);
 
     // Fonction récursive pour parcourir l'arbre en parcours infixe
     void parcoursInfixe(Arbre *node) {
         if (node) {
             parcoursInfixe(node->fils_gauche);
-            fprintf(file, "%d:%ld:%ld\n", node->identifiant, node->capacite, node->consommation);
+            fprintf(fichier_CSV, "%d:%ld:%ld\n", node->identifiant, node->capacite, node->consommation);
             parcoursInfixe(node->fils_droit);
         }
     }
 
     // Lancer le parcours à partir de la racine
-    parcoursInfixe(root);
+    parcoursInfixe(racine);
 
-    fclose(file); // Fermer le fichier après écriture
+    fclose(fichier_CSV); // Fermer le fichier après écriture
 }
 
 

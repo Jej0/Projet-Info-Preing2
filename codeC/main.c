@@ -29,6 +29,6 @@ int main() {
 
 
     exporterAVLDansCSV(racine, strcat(chemin, ligne));
-
+    free(racine);
 
 }

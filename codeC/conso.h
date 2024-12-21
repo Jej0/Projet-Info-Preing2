@@ -269,13 +269,13 @@ void minMaxStationLV(Arbre *racine, char * nomFichier) {
 void exporterAVLDansCSV(Arbre *racine, char *nomFichier) {
     if (!racine) return; // Si l'arbre est vide, rien à écrire
 
-    FILE *fichier_CSV = fopen(nomFichier, "w");
+    FILE *fichier_CSV = fopen(nomFichier, "w"); // crée le fichier CSV que l'on rend
     if (!fichier_CSV) {
         perror("Erreur lors de l'ouverture du fichier CSV");
         return;
     }
 
-    FILE *fichier_info = fopen("../tmp/nom", "r");
+    FILE *fichier_info = fopen("../tmp/nom", "r"); 
     if (!fichier_info) {
         perror("Erreur lors de l'ouverture du fichier nom");
         return;
@@ -298,11 +298,11 @@ void exporterAVLDansCSV(Arbre *racine, char *nomFichier) {
     fprintf(fichier_CSV, "%s:Capacité:Consommation %s\n", nom_station, info_conso);
 
     // Fonction récursive pour parcourir l'arbre en parcours infixe
-    void parcoursInfixe(Arbre *node) {
-        if (node) {
-            parcoursInfixe(node->fils_gauche);
-            fprintf(fichier_CSV, "%d:%ld:%ld\n", node->identifiant, node->capacite, node->consommation);
-            parcoursInfixe(node->fils_droit);
+    void parcoursInfixe(Arbre *abr) {
+        if (abr) {
+            parcoursInfixe(abr->fils_gauche);
+            fprintf(fichier_CSV, "%d:%ld:%ld\n", abr->identifiant, abr->capacite, abr->consommation);
+            parcoursInfixe(abr->fils_droit);
         }
     }
 

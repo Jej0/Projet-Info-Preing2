@@ -262,8 +262,14 @@ void minMaxStationLV(Arbre *racine, char * nomFichier) {
     printf("%s", chemin);
     exporterExtremeStations(liste_min, liste_max, chemin);
 }
-
-
+// Fonction récursive pour parcourir l'arbre en parcours infixe
+ void parcoursInfixe(Arbre *abr , FILE * fichier_CSV){
+        if (abr) {
+            parcoursInfixe(abr->fils_gauche , fichier_CSV);
+            fprintf(fichier_CSV, "%d:%ld:%ld\n", abr->identifiant, abr->capacite, abr->consommation);
+            parcoursInfixe(abr->fils_droit , fichier_CSV);
+        }
+    }
 
 
 void exporterAVLDansCSV(Arbre *racine, char *nomFichier) {
@@ -297,17 +303,9 @@ void exporterAVLDansCSV(Arbre *racine, char *nomFichier) {
     // Écrire les en-têtes des colonnes
     fprintf(fichier_CSV, "%s:Capacité:Consommation %s\n", nom_station, info_conso);
 
-    // Fonction récursive pour parcourir l'arbre en parcours infixe
-    void parcoursInfixe(Arbre *abr) {
-        if (abr) {
-            parcoursInfixe(abr->fils_gauche);
-            fprintf(fichier_CSV, "%d:%ld:%ld\n", abr->identifiant, abr->capacite, abr->consommation);
-            parcoursInfixe(abr->fils_droit);
-        }
-    }
 
     // Lancer le parcours à partir de la racine
-    parcoursInfixe(racine);
+    parcoursInfixe(racine , fichier_CSV);
 
     fclose(fichier_CSV); // Fermer le fichier après écriture
 

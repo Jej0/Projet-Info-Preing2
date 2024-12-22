@@ -10,7 +10,7 @@ void affichePrefixe(Arbre *abr){
 }
 
 
-Arbre *creerNoeud(int id, long capacite) {
+Arbre *creerNoeud(int id, long capacite) {//fonction qui crée le noeud
     Arbre *noeud = malloc(sizeof(Arbre));
     if (noeud == NULL) {
         perror("Erreur d'allocation mémoire");
@@ -19,8 +19,8 @@ Arbre *creerNoeud(int id, long capacite) {
 
     noeud->identifiant = id;
     noeud->capacite = capacite;
-    noeud->consommation = 0;    // Initialisé à 0
-    noeud->consommateurs = 0;   // Initialisé à 0
+    noeud->consommation = 0;    // Initialise à 0
+    noeud->consommateurs = 0;   // Initialise à 0
     noeud->equilibre = 0;       // Facteur d'équilibre initialisé à 0
     noeud->hauteur = 1;         // Hauteur initiale
     noeud->fils_gauche = NULL;
@@ -29,10 +29,10 @@ Arbre *creerNoeud(int id, long capacite) {
     return noeud;
 }
 
-int hauteur(Arbre *noeud) {
+int hauteur(Arbre *noeud) {//fonction qui calcule la hauteur
     return noeud ? noeud->hauteur : 0;
 }
-int calculerEquilibre(Arbre *noeud) {
+int calculerEquilibre(Arbre *noeud) {//fonction qui calcule l'équilibre
     return noeud ? hauteur(noeud->fils_gauche) - hauteur(noeud->fils_droit) : 0;
 }
 void mettreAJour(Arbre *noeud) {
@@ -70,21 +70,21 @@ Arbre *doubleRotationDroiteGauche(Arbre *noeud) {
 Arbre *equilibrer(Arbre *noeud) {
     mettreAJour(noeud);
 
-    if (noeud->equilibre > 1) { // Sous-arbre gauche plus profond
+    if (noeud->equilibre > 1) { // Sous-arbre gauche le plus profond
         if (noeud->fils_gauche->equilibre < 0) { // Rotation gauche-droite nécessaire
             return doubleRotationGaucheDroite(noeud);
         }
         return rotationDroite(noeud); // Rotation droite simple
     }
 
-    if (noeud->equilibre < -1) { // Sous-arbre droit plus profond
+    if (noeud->equilibre < -1) { // Sous-arbre droit le plus profond
         if (noeud->fils_droit->equilibre > 0) { // Rotation droite-gauche nécessaire
             return doubleRotationDroiteGauche(noeud);
         }
         return rotationGauche(noeud); // Rotation gauche simple
     }
 
-    return noeud; // Aucun déséquilibre
+    return noeud; // aucun déséquilibre
 }
 Arbre *insererStation(Arbre *noeud, int id, long capacite) {
     if (noeud == NULL) {
@@ -97,10 +97,10 @@ Arbre *insererStation(Arbre *noeud, int id, long capacite) {
         noeud->fils_droit = insererStation(noeud->fils_droit, id, capacite);
     } else {
         printf("Erreur : La station avec l'ID %d existe déjà.\n", id);
-        return noeud; // ID déjà présent, pas d'insertion
+        return noeud; // ID déjà présent donc pas d'insertion
     }
 
-    return equilibrer(noeud); // Rééquilibrer après insertion
+    return equilibrer(noeud); // Rééquilibrer après l'insertion
 }
 Arbre *construireAVLDepuisFichier(const char *filename) {
     FILE *file = fopen(filename, "r");
@@ -156,7 +156,7 @@ void ajouterConsommateursDepuisFichier(Arbre *root, const char *filename) {
         return;
     }
 
-    char line[300]; // Buffer pour lire chaque ligne
+    char line[300]; // pour lire chaque ligne
 
     while (fgets(line, sizeof(line), file)) {
         int id;

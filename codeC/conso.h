@@ -311,7 +311,7 @@ void exporterAVLDansCSV(Arbre *racine, char *nomFichier) {
 
     if (strcmp(nom_station, "Station LV") == 0 && strcmp(info_conso, "(tous)") == 0) {
 
-        nomFichier[strlen(nomFichier) - 4] = '\0';
+        nomFichier[strlen(nomFichier) - 5] = '\0';
         minMaxStationLV(racine, nomFichier);
     }
 

@@ -35,11 +35,11 @@ int hauteur(Arbre *noeud) {//fonction qui calcule la hauteur
 int calculerEquilibre(Arbre *noeud) {//fonction qui calcule l'équilibre
     return noeud ? hauteur(noeud->fils_gauche) - hauteur(noeud->fils_droit) : 0;
 }
-void mettreAJour(Arbre *noeud) {
+void mettreAJour(Arbre *noeud) {//va nous servir pour les rotations
     noeud->hauteur = 1 + (hauteur(noeud->fils_gauche) > hauteur(noeud->fils_droit) ? hauteur(noeud->fils_gauche) : hauteur(noeud->fils_droit));
     noeud->equilibre = calculerEquilibre(noeud);
 }
-Arbre *rotationGauche(Arbre *noeud) {
+Arbre *rotationGauche(Arbre *noeud) {//fonction rotation gauche qui permet de rééquilibrer l'arbre
     Arbre *pivot = noeud->fils_droit;
     noeud->fils_droit = pivot->fils_gauche;
     pivot->fils_gauche = noeud;
@@ -49,7 +49,7 @@ Arbre *rotationGauche(Arbre *noeud) {
 
     return pivot;
 }
-Arbre *rotationDroite(Arbre *noeud) {
+Arbre *rotationDroite(Arbre *noeud) {//fonction rotation gauche qui permet de rééquilibrer l'arbre
     Arbre *pivot = noeud->fils_gauche;
     noeud->fils_gauche = pivot->fils_droit;
     pivot->fils_droit = noeud;

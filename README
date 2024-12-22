@@ -1,1 +1,22 @@
+README 
+Description
+Script Bash pour analyser des données de stations électriques (HV-B, HV-A, LV) et leurs clients (entreprises ou particuliers).
+Utilisation
+./script [-h | --help] <path> <hvb | hva | lv> <comp | indiv | all> [<value>]
+Arguments
+•	[-h | --help] : Affiche l'aide.
+•	: Chemin vers le fichier de données.
+•	<hvb | hva | lv> : Type de station (« hvb » : haute tension, « hva » : moyenne tension, « lv » : basse tension).
+•	<comp | indiv | all> : Type de client (« comp » : entreprises, « indiv » : particuliers, « all » : tous).
+•	[****] : Optionnel, valeur 1-5 pour filtrer une centrale.
+Fonctionnalités
+1.	Validation : Vérifie les arguments et l'existence du fichier.
+2.	Compilation automatique : Compile l'exécutable si absent (à partir du Makefile dans codeC).
+3.	Traitement des données : Extraction avec awk pour station/type client.
+4.	Organisation : Création des dossiers tmp (temporaire) et graphs (sorties).
+Prérequis
+•	Bash, awk, Makefile.
+Exemple
+./c-wire.sh c-wire_v00.csv lv all 3
+Traite les données pour la station basse tension avec tous les clients et filtre sur la centrale 3.
 

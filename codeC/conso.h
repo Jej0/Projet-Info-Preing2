@@ -311,10 +311,7 @@ void exporterAVLDansCSV(Arbre *racine, char *nomFichier) {
 
     if (strcmp(nom_station, "Station LV") == 0 && strcmp(info_conso, "(tous)") == 0) {
 
-        char nouveau_nom[300];
-        strcpy(nouveau_nom, nom_fichier_original);
-        // Retirer l'extension .csv
-        char *point = strrchr(nouveau_nom, '.');
+        char *point = strrchr(nom_station, '.');
         if (point) {
             *point = '\0';
         }

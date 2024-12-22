@@ -17,7 +17,7 @@ int main() {
         return 1; // Retourne une erreur si le fichier ne peut pas être ouvert
     }
 
-    char ligne[256]; // Buffer pour stocker la ligne
+    char ligne[300]; // Buffer pour stocker la ligne
     fgets(ligne, sizeof(ligne), nom_fichier);
     ligne[strcspn(ligne, "\n")] = '\0';
 

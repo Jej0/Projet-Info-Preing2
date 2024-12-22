@@ -14,7 +14,7 @@ Arbre *creerNoeud(int id, long capacite) {//Fonction qui crée le noeud
     Arbre *noeud = malloc(sizeof(Arbre));
     if (noeud == NULL) {
         perror("Erreur d'allocation mémoire");
-        exit(EXIT_FAILURE);
+        exit(1);
     }
 
     noeud->identifiant = id;

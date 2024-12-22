@@ -318,8 +318,8 @@ void exporterAVLDansCSV(Arbre *racine, char *nomFichier) {
         if (point) {
             *point = '\0';
         }
-        strcat(nouveau_nom, "_minmax.csv");
-        minMaxStationLV(racine, nouveau_nom);
+        strcat(fichier_info, "_minmax.csv");
+        minMaxStationLV(racine, fichier_info);
     }
 
 }

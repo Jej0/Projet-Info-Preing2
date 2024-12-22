@@ -287,13 +287,11 @@ void exporterAVLDansCSV(Arbre *racine, char *nomFichier) {
         return;
     }
 
-    char nom_fichier_station[300];
     char nom_station[300];
     char info_conso[300];
 
 
-    fgets(nom_fichier_station, sizeof(nom_fichier_station), fichier_info);
-    nom_fichier_station[strcspn(nom_fichier_station, "\n")] = '\0';
+    fgets(nom_station, sizeof(nom_station), fichier_info);
     fgets(nom_station, sizeof(nom_station), fichier_info);
     nom_station[strcspn(nom_station, "\n")] = '\0';
 
@@ -313,12 +311,8 @@ void exporterAVLDansCSV(Arbre *racine, char *nomFichier) {
 
     if (strcmp(nom_station, "Station LV") == 0 && strcmp(info_conso, "(tous)") == 0) {
 
-        char *point = strrchr(nom_fichier_station, '.');
-        if (point) {
-            *point = '\0';
-        }
-        strcat(nom_fichier_station, "_minmax.csv");
-        minMaxStationLV(racine, nom_fichier_station);
+        nomFichier[strlen(nomFichier) - 4] = '\0';
+        minMaxStationLV(racine, nomFichier);
     }
 
 }

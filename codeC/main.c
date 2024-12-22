@@ -19,6 +19,7 @@ int main() {
 
     char ligne[256]; // Buffer pour stocker la ligne
     fgets(ligne, sizeof(ligne), nom_fichier);
+    ligne[strcspn(ligne, "\n")] = '\0';
 
     fclose(nom_fichier);
 

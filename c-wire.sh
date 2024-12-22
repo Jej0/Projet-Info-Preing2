@@ -109,17 +109,19 @@ else
 fi
 
 if [ -d "tmp" ]; then
-    rm -r tmp
-    mkdir tmp
+    rm -r tmp #suppr
+    mkdir tmp # Crée le dossier
 else
-    mkdir tmp
+    mkdir tmp # Crée le dossier
 fi
 
 if [ ! -d "graphs" ]; then
-    mkdir graphs
+    mkdir graphs # Crée le dossier
 fi
 
-
+if [ ! -d "tests" ]; then
+  mkdir tests  # Crée le dossier
+fi
 
 
 

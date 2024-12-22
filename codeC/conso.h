@@ -310,9 +310,16 @@ void exporterAVLDansCSV(Arbre *racine, char *nomFichier) {
     fclose(fichier_CSV); // Fermer le fichier après écriture
 
     if (strcmp(nom_station, "Station LV") == 0 && strcmp(info_conso, "(tous)") == 0) {
-        printf("test");
-        nomFichier[strlen(nomFichier) - 4] = '\0';
-        minMaxStationLV(racine, nomFichier);
+
+        char nouveau_nom[300];
+        strcpy(nouveau_nom, nom_fichier_original);
+        // Retirer l'extension .csv
+        char *point = strrchr(nouveau_nom, '.');
+        if (point) {
+            *point = '\0';
+        }
+        strcat(nouveau_nom, "_minmax.csv");
+        minMaxStationLV(racine, nouveau_nom);
     }
 
 }
